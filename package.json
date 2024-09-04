@@ -1,0 +1,18 @@
+{
+  "name": "cli-godmode",
+  "version": "0.1.0",
+  "main": "godmode.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "CLI to automate Next.js project creation and deployment",
+  "dependencies": {
+    "commander": "^12.1.0"
+  },
+  "bin": {
+    "godmode": "./godmode.js"
+  }
+}
