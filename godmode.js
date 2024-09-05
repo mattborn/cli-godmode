@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 
+const { updateFiles } = require('./files')
 const { Command } = require('commander')
-const program = new Command()
 const { execSync } = require('child_process')
+const program = new Command()
 require('dotenv').config({ path: '.env.local' })
-
-// const fs = require('fs')
 
 program
   .version('0.1.0')
@@ -28,16 +27,12 @@ program
       try {
         if (!options.skipNext) {
           execSync(
-            `npx create-next-app@latest ${projectName} --no-package-lock --typescript --yes --eslint --tailwind --src-dir --app --import-alias "@/*"`,
+            `npx create-next-app@latest ${projectName} --no-package-lock --typescript --yes --tailwind --src-dir --app --import-alias "@/*"`,
             { stdio: 'inherit' },
           )
-          process.chdir(projectName)
-          execSync('npm install @clerk/nextjs', { stdio: 'inherit' })
-          execSync('git add .')
-          execSync('git commit -m "Add Clerk"')
-        } else {
-          process.chdir(projectName)
         }
+        process.chdir(projectName)
+        updateFiles()
 
         if (!options.skipGithub) {
           execSync(`gh repo create ${process.env.GITHUB_USERNAME}/${projectName} --public --push --source=.`, {
@@ -46,8 +41,9 @@ program
         }
 
         execSync(`vercel link --yes`, { stdio: 'inherit' })
+        execSync('yes | npx vercel-env-push .env.local production preview development')
         execSync('vercel deploy')
-        execSync('vercel link --repo')
+        // execSync('vercel link --repo --yes')
 
         console.log(`🔥 Project ${projectName} created and deployed successfully`)
       } catch (error) {
