@@ -27,7 +27,7 @@ program
       try {
         if (!options.skipNext) {
           execSync(
-            `npx create-next-app@latest ${projectName} --no-package-lock --typescript --yes --tailwind --src-dir --app --import-alias "@/*"`,
+            `npx create-next-app@latest ${projectName} --no-package-lock --typescript --yes --no-eslint --tailwind --src-dir --app --import-alias "@/*"`,
             { stdio: 'inherit' },
           )
         }
